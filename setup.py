@@ -11,6 +11,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = [
     'pyramid',
     'pyramid_jinja2',
+    'SQLAlchemy',
     'pyramid_debugtoolbar',
     'waitress',
     ]
@@ -46,5 +47,7 @@ setup(name='learning_journal_basic',
       entry_points="""\
       [paste.app_factory]
       main = learning_journal_basic:main
+      [console_scripts]
+      initialize_learning_journal_db = learning_journal.scripts.initialzedb:main
       """,
       )
