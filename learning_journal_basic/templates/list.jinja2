@@ -1,0 +1,17 @@
+{% extends "layout.jinja2" %}
+
+{% block body %}
+    <article class="post">
+        <ul>
+            {% if entries %}
+                {% for entry in entries %}
+                    <li>
+                        <h3><a href={{ request.route_url('detail', id=entry.id) }}>{{ entry.title }}</a></h3>
+                        <h4>Date Created: {{ entry.creation_date }}</h4>
+                        <p>{{ entry.body }}</p>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>    
+    </article>
+{% endblock %}

@@ -1,29 +1,37 @@
-import unittest
-
+import pytest
 from pyramid import testing
 
 
-class ViewTests(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp()
-
-    def tearDown(self):
-        testing.tearDown()
-
-    def test_my_view(self):
-        from .views import my_view
-        request = testing.DummyRequest()
-        info = my_view(request)
-        self.assertEqual(info['project'], 'learning_journal_basic')
+@pytest.fixture
+def req():
+    """Set up a request object by instantiating from the DummyRequest class."""
+    the_request = testing.DummyRequest()
+    return the_request
 
 
-class FunctionalTests(unittest.TestCase):
-    def setUp(self):
-        from learning_journal_basic import main
-        app = main({})
-        from webtest import TestApp
-        self.testapp = TestApp(app)
+@pytest.fixture
+def testapp():
+    """Create an instance of our app for testing."""
+    from webtest import TestApp
+    from learning_journal_basic import main
+    app = main({})
+    return TestApp(app)
 
-    def test_root(self):
-        res = self.testapp.get('/', status=200)
-        self.assertTrue(b'Pyramid' in res.body)
+
+def test_home_page_has_the_right_variable(req):
+    """Test that the home page view returns data."""
+    from .views import list
+    response = list(req)
+    assert "entry" in response
+
+
+def test_home_page_has_iterable(req):
+    from .views import list
+    response = list(req)
+    assert hasattr(response["entry"], "__iter__")
+
+
+def test_home_page_has_list(testapp):
+    """Test that home page has list of entries rendered."""
+    response = testapp.get("/", status=200)
+    inner_html = response.html
