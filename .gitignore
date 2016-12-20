@@ -89,3 +89,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+*.egg-info
+
+bin/
+pip-selfcheck.json
+pyvenv.cfg
+share/
