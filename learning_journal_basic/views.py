@@ -67,6 +67,7 @@ ENTRIES = {
 
 @view_config(route_name="list", renderer="templates/list.jinja2")
 def list(request):
+    """View for the list page."""
     return {"entries": ENTRIES}
 
 
